@@ -1,0 +1,33 @@
+static void Main(string[] args)
+{
+    WebAPIHelper helper = new WebAPIHelper("http://localhost:1195/api/customers/");
+
+    //get all Customer items
+    Customer[] data = helper.Get();
+    foreach (Customer t in data)
+    {
+        Console.WriteLine(t.CompanyName);
+    }
+
+    //get only a single Customer object
+    data = helper.Get("ALFKI");
+    Console.WriteLine(data[0].CompanyName);
+
+    //modify and save an existing Customer
+    data[0].CompanyName = data[0].CompanyName + "123";
+    helper.Put(data[0].CustomerID, data[0]);
+
+    //add a new Customer
+    Customer c = new Customer();
+    c.CustomerID = "CODE1";
+    c.CompanyName = "Company 1";
+    c.ContactName = "Contact 1";
+    c.Country = "Country 1";
+    helper.Post(c);
+
+    //delete the Customer we just added
+    helper.Delete("CODE1");
+
+    Console.WriteLine("done");
+    Console.ReadLine();
+} 
